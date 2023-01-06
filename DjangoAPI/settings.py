@@ -37,9 +37,21 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "corsheaders",
+    "EmployeeApp.apps.EmployeeappConfig",
 ]
 
+# Enable all domains [to be able] to access the API.
+# (
+# In production:
+#   - this is not recommended;
+#   - it is recommended to just add only those domains that need to be whitelisted.
+# )
+CORS_ORIGIN_ALLOW_ALL = True
+
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

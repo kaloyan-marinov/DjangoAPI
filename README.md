@@ -1,3 +1,9 @@
+```
+$ cp .env.template .env
+
+# Edit the content of `.env` as per the comments/instructions therein.
+```
+
 use Docker to serve the persistence layer,
 but use `localhost` (= the local network interface) to serve the Django application:
 
@@ -15,9 +21,7 @@ $ source venv/bin/activate
 docker run \
     --name container-DjangoAPI-postgres \
     --mount source=volume-DjangoAPI-postgres,destination=/var/lib/postgresql/data \
-    --env POSTGRES_PASSWORD=p_4_DjangoAPI_database \
-    --env POSTGRES_USER=u_4_DjangoAPI_database \
-    --env POSTGRES_DB=DjangoAPI_database \
+    --env-file .env \
     --publish 5432:5432 \
     postgres:15.1
 ```
@@ -37,20 +41,20 @@ $ docker container exec -it container-DjangoAPI-postgres /bin/bash
 root@<container-id> psql \
     --host=localhost \
     --port=5432 \
-    --username=u_4_DjangoAPI_database \
+    --username=<the-value-for-POSTGRES_USER-in-the-.env-file> \
     --password \
-    DjangoAPI_database
+    <the-value-for-POSTGRES_DB-in-the-.env-file>
 
-DjangoAPI_database=# \d
+<the-value-for-POSTGRES_DB-in-the-.env-file>=# \d
                                    List of relations
  Schema |                   Name                   |   Type   |         Owner          
 --------+------------------------------------------+----------+------------------------
- public | EmployeeApp_departments                  | table    | u_4_DjangoAPI_database
- public | EmployeeApp_departments_DepartmentId_seq | sequence | u_4_DjangoAPI_database
- public | EmployeeApp_employees                    | table    | u_4_DjangoAPI_database
- public | EmployeeApp_employees_EmployeeId_seq     | sequence | u_4_DjangoAPI_database
- public | django_migrations                        | table    | u_4_DjangoAPI_database
- public | django_migrations_id_seq                 | sequence | u_4_DjangoAPI_database
+ public | EmployeeApp_departments                  | table    | <the-value-for-POSTGRES_USER-in-the-.env-file>
+ public | EmployeeApp_departments_DepartmentId_seq | sequence | <the-value-for-POSTGRES_USER-in-the-.env-file>
+ public | EmployeeApp_employees                    | table    | <the-value-for-POSTGRES_USER-in-the-.env-file>
+ public | EmployeeApp_employees_EmployeeId_seq     | sequence | <the-value-for-POSTGRES_USER-in-the-.env-file>
+ public | django_migrations                        | table    | <the-value-for-POSTGRES_USER-in-the-.env-file>
+ public | django_migrations_id_seq                 | sequence | <the-value-for-POSTGRES_USER-in-the-.env-file>
 (6 rows)
 ```
 
@@ -66,20 +70,20 @@ $ docker container exec -it container-DjangoAPI-postgres /bin/bash
 root@<container-id> psql \
     --host=localhost \
     --port=5432 \
-    --username=u_4_DjangoAPI_database \
+    --username=<the-value-for-POSTGRES_USER-in-the-.env-file> \
     --password \
-    DjangoAPI_database
+    <the-value-for-POSTGRES_DB-in-the-.env-file>
 
-DjangoAPI_database=# INSERT INTO "EmployeeApp_departments" VALUES (1, 'Accounting');
+<the-value-for-POSTGRES_DB-in-the-.env-file>=# INSERT INTO "EmployeeApp_departments" VALUES (1, 'Accounting');
         
-DjangoAPI_database=# INSERT INTO "EmployeeApp_departments" VALUES (2, 'Human Resources');
+<the-value-for-POSTGRES_DB-in-the-.env-file>=# INSERT INTO "EmployeeApp_departments" VALUES (2, 'Human Resources');
         
-DjangoAPI_database=# SELECT * FROM "EmployeeApp_departments";
+<the-value-for-POSTGRES_DB-in-the-.env-file>=# SELECT * FROM "EmployeeApp_departments";
 
-DjangoAPI_database=# INSERT INTO "EmployeeApp_employees"
+<the-value-for-POSTGRES_DB-in-the-.env-file>=# INSERT INTO "EmployeeApp_employees"
         VALUES (1, 'Janice', 'Accounting', '2015-09-01', 'janice@protonmail.com');
 
-DjangoAPI_database=# SELECT * FROM "EmployeeApp_employees";
+<the-value-for-POSTGRES_DB-in-the-.env-file>=# SELECT * FROM "EmployeeApp_employees";
 ```
 
 it is interesting to emphasize that

@@ -4,8 +4,11 @@ $ cp .env.template .env
 # Edit the content of `.env` as per the comments/instructions therein.
 ```
 
+the remainder of this description will explain how to
 use Docker to serve the persistence layer,
-but use `localhost` (= the local network interface) to serve the Django application:
+but use `localhost` (= the local network interface) to serve the Django application
+
+---
 
 ```
 $ python3 --version
@@ -74,12 +77,6 @@ root@<container-id> psql \
     --password \
     <the-value-for-POSTGRES_DB-in-the-.env-file>
 
-<the-value-for-POSTGRES_DB-in-the-.env-file>=# INSERT INTO "EmployeeApp_departments" VALUES (1, 'Accounting');
-        
-<the-value-for-POSTGRES_DB-in-the-.env-file>=# INSERT INTO "EmployeeApp_departments" VALUES (2, 'Human Resources');
-        
-<the-value-for-POSTGRES_DB-in-the-.env-file>=# SELECT * FROM "EmployeeApp_departments";
-
 <the-value-for-POSTGRES_DB-in-the-.env-file>=# INSERT INTO "EmployeeApp_employees"
         VALUES (1, 'Janice', 'Accounting', '2015-09-01', 'janice@protonmail.com');
 
@@ -95,8 +92,35 @@ that I got the idea about surrounding each table name with quotation marks
 
 )
 
+---
+
 ```
 # Launch one terminal instance and, in it, start serving the application:
 
 (venv) $ python manage.py runserver
+```
+
+```
+# Launch a second terminal instance and, in it, issue requests to the application:
+
+$ http localhost:8000/departments
+
+$ http POST localhost:8000/departments \
+    DepartmentName="Accounting"
+
+$ http POST localhost:8000/departments \
+    DepartmentName="Human Resources"
+
+$ http POST localhost:8000/departments \
+    DepartmentName="CustomerSuppor"
+
+$ http localhost:8000/departments
+
+$ http PUT localhost:8000/departments \
+    DepartmentId=3 \
+    DepartmentName="Customer Support"
+
+$ http localhost:8000/departments
+
+$ http DELETE localhost:8000/departments/3
 ```

@@ -6,7 +6,7 @@ Serializers basically help:
     that can then be easily rendered into JSON or XML or other content types;
 
 (b) in de-serialization,
-    which is nothing but converting the passed data back into "complex types".
+    which is nothing but converting "parsed[/rendered] data" back into "complex types".
 
 This module implements special serializers called _model serializers_.
 """
